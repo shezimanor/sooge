@@ -10,7 +10,8 @@ var SpriteGameObject = (function() {
       fps: 12,
       imgStartIndex: 0,
       imgEndIndex: imgs.length -1,
-      repeat: -1
+			repeat: -1,
+			stopAndDie: true
     };
 		Particle.call(this, x, y); // super(x, y, speed, direction, gravity)
 		this.ctx = ctx;
@@ -93,6 +94,7 @@ var SpriteGameObject = (function() {
 	};
 
 	Constructor.prototype.draw = function() {
+		if (!this.alive) return;
 		this.ctx.save();
 		this.ctx.translate(this.x, this.y);
 		if (this.isRotate) this.ctx.rotate(this.angle);
@@ -136,7 +138,8 @@ var SpriteGameObject = (function() {
         this.currentFrame = 0;
         this.currentRepeat++;
       } else {
-        this.stop();
+				this.stop();
+				if(this.settings.stopAndDie) this.kill();
       }
     }
   }

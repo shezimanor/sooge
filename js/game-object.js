@@ -79,6 +79,7 @@ var GameObject = (function() {
 	};
 
 	Constructor.prototype.draw = function() {
+		if (!this.alive) return;
 		this.ctx.save();
 		this.ctx.translate(this.x, this.y);
 		if (this.isRotate) this.ctx.rotate(this.angle);

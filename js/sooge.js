@@ -47,9 +47,9 @@ var SOOGE = (function () {
     var _self = this;
     console.log(this.source);
     // 建立遊戲物件
-    _self.moveItem = new SpriteGameObject(_self.ctx, 500, 220, _self.source['waterBottle'], { fps: 40 });
+    _self.moveItem = new SpriteGameObject(_self.ctx, 500, 220, _self.source['waterBottle'], { fps: 16, repeat: 1, stopAndDie: true });
     _self.moveItem.play();
-    _self.moveItem1 = new SpriteGameObject(_self.ctx, 180, 220, _self.source['ADA'], { fps: 40 });
+    _self.moveItem1 = new SpriteGameObject(_self.ctx, 180, 220, _self.source['ADA'], { fps: 24 });
     _self.moveItem1.play();
     // 遊戲開始
     _self.canPlay = true;

@@ -65,7 +65,7 @@ var utils = (function(window) {
 		var sortQueueArray = function (queue) {
 			var key;
 			for (key in queue) {
-				if (queue[key].constructor === 'Array') {
+				if (queue[key].constructor === Array) {
 					queue[key].sort(function(a, b) {
 						return a.spriteIndex - b.spriteIndex;
 					});
@@ -84,7 +84,6 @@ var utils = (function(window) {
 			// -1 是因為 settings.manifest.length 已經有算進去一次了
 			if (preloadObj.type && preloadObj.type === 'sprite') {
 				spriteQty += preloadObj.frames - 1;
-				// hasSprite = true
 				if (!hasSprite) hasSprite = true;
 			}
 		});
@@ -120,7 +119,7 @@ var utils = (function(window) {
 					total: allQty,
 					img: this
 				};
-				handleLoadEvent(data)
+				handleLoadEvent(data);
 			},
 			sprite: function (spriteId, index, lastIndex, e) {
 				loadedQty++;
@@ -132,7 +131,7 @@ var utils = (function(window) {
 					total: allQty,
 					img: this
 				};
-				handleLoadEvent(data)
+				handleLoadEvent(data);
 			},
 			audio: function(id, e) {
 				if (e.target.status === 200) {
@@ -144,7 +143,7 @@ var utils = (function(window) {
 						audio: this
 					};
 					this.src = URL.createObjectURL(e.target.response);
-					handleLoadEvent(data)
+					handleLoadEvent(data);
 				} else {
 					onError(id);
 				}
@@ -159,7 +158,7 @@ var utils = (function(window) {
 						video: this
 					};
 					this.src = URL.createObjectURL(e.target.response);
-					handleLoadEvent(data)
+					handleLoadEvent(data);
 				} else {
 					onError(id);
 				}
