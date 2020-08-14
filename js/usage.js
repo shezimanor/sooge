@@ -1,7 +1,7 @@
 const obj = {
 	name: 'George',
-	click() {
-	  this.trigger('go', 'let him go');
+	walk() {
+	  this.trigger('walk', 'let me go');
 	},
 	sing() {
 		return `lalala ${this.name}`;
@@ -14,10 +14,10 @@ const obj = {
 
 // Observer
 Observer(obj);
-obj.on('go',function (txt) {
+obj.on('walk', function (txt) {
   console.log(txt);
 });
-obj.click();
+obj.walk();
 
 
 // utils
@@ -39,14 +39,11 @@ utils.preloader({
 	{
 	  id: 'desk',
 	  src: './images/desk.png'
-	}],
+	}
+  ],
   onEachLoad: function () {},
   onAllLoad: function (source) {
-		// do something
-		// console.log('source:', source);
-		var game = new SOOGE({
-			source: source,
-			canvas: document.getElementById('gameCanvas')
-		});
+    // do something
+    console.log('source:', source);
   }
 });

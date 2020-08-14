@@ -4,7 +4,7 @@
  * Author : Ryan Chen
  * Version: 1.0.0
  * Create : 2020.08.07
- * Update: 2020.08.07
+ * Update: 2020.08.14
  * License: MIT
  */
 
@@ -289,6 +289,26 @@ var utils = (function(window) {
 		};
 	};
 
+	/**
+	 * [原陣列洗牌]
+	 * @param  {Array}  array
+	 * @param  {Number} size 可以設定洗牌的長度
+	 */
+	var shuffleSelf = function (array, size) {
+		var index = -1;
+		var length = array.length;
+		var lastIndex = length - 1;
+		size = size === undefined ? length : size;
+		while (++index < size) {
+			var rand = Tools.randomInt(index, lastIndex);
+			var value = array[rand];
+			array[rand] = array[index];
+			array[index] = value;
+		}
+		array.length = size;
+		return array;
+	};
+
 	return {
 		preloader: preloader,
 		randomRange: randomRange,
@@ -301,7 +321,8 @@ var utils = (function(window) {
 		isLineInapp: isLineInapp,
 		Event: Event,
 		deepCopy: deepCopy,
-		coordinate: coordinate
+		coordinate: coordinate,
+		shuffleSelf: shuffleSelf
 	};
 
 })(window);
