@@ -14,7 +14,7 @@ var SOOGE = (function () {
       x: 0,
       y: 0
     };
-    this.init();
+    // this.init();
   };
 
   var __utils = {
@@ -43,18 +43,48 @@ var SOOGE = (function () {
   // observer.js
   Observer(Constructor.prototype);
 
-  Constructor.prototype.init = function () {
+  Constructor.prototype.init = function (callback) {
     var _self = this;
     console.log(this.source);
     // 建立遊戲物件
-    _self.moveItem = new SpriteGameObject(_self.ctx, 500, 220, _self.source['waterBottle'], { fps: 16, repeat: 1, stopAndDie: true });
+    _self.moveItem = new SpriteGameObject(_self.ctx, 180, 220, _self.source['waterBottle'], {
+      fps: 16,
+      repeat: -1,
+      stopAndDie: false,
+      animations: {
+        a1: {
+          frames: [7,8,9,10,11,12,13,14],
+          fps: 12,
+          repeat: -1,
+          stopAndDie: false
+        },
+        a2: {
+          frames: '0..6',
+          fps: 18,
+          repeat: -1,
+          stopAndDie: false
+        },
+        a3: {
+          frames: '18..0',
+          fps: 30,
+          repeat: 2,
+          stopAndDie: false
+        }
+      }
+    });
+    // 註冊動畫結束事件
+    _self.moveItem.on('SGObj:animation:stop', function(stoppedAnimation) {
+      // 指定的動畫結束後，回去播預設的循環動畫
+      if (stoppedAnimation === 'a3') _self.moveItem.play();
+    });
     _self.moveItem.play();
-    _self.moveItem1 = new SpriteGameObject(_self.ctx, 180, 220, _self.source['ADA'], { fps: 24 });
-    _self.moveItem1.play();
+    // _self.moveItem1 = new SpriteGameObject(_self.ctx, 400, 220, _self.source['ADA'], { fps: 24 });
+    // _self.moveItem1.play();
     // 遊戲開始
     _self.canPlay = true;
     _self._addMouseEvent();
     _self._loop();
+    callback && callback();
   };
 
   Constructor.prototype._addMouseEvent = function () {
@@ -107,7 +137,7 @@ var SOOGE = (function () {
   Constructor.prototype._draw = function () {
     this.ctx.clearRect(0, 0, this.width, this.height);
     this.moveItem.draw();
-    this.moveItem1.draw();
+    // this.moveItem1.draw();
   };
 
   Constructor.prototype._loop = function () {

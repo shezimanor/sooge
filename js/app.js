@@ -48,5 +48,19 @@ utils.preloader({
 			source: source,
 			canvas: document.getElementById('gameCanvas')
 		});
+		game.init(function() {
+			document.getElementById('play1').addEventListener('click', function (e) {
+				game.moveItem.play('a1');
+			});
+
+			document.getElementById('play2').addEventListener('click', function (e) {
+				game.moveItem.play('a2');
+			});
+
+			document.getElementById('play3').addEventListener('click', function (e) {
+				game.moveItem.play('a3');
+			});
+		})
+		
   }
 });
