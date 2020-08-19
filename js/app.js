@@ -37,6 +37,27 @@ utils.preloader({
 		frames: 16
 	},
 	{
+		id: 'fireball',
+		type: 'sprite',
+		pathPrepend: './images/fireball/fireball_',
+		imgType: '.png',
+		frames: 18
+	},
+	{
+		id: 'vikings',
+		type: 'sprite',
+		pathPrepend: './images/vikings/vikings_',
+		imgType: '.png',
+		frames: 35
+	},
+	// {
+	// 	id: 'pikachu',
+	// 	type: 'sprite',
+	// 	pathPrepend: './images/pikachu/pikachu_00',
+	// 	imgType: '.png',
+	// 	frames: 3
+	// },
+	{
 	  id: 'desk',
 	  src: './images/desk.png'
 	}],
@@ -49,16 +70,32 @@ utils.preloader({
 			canvas: document.getElementById('gameCanvas')
 		});
 		game.init(function() {
-			document.getElementById('play1').addEventListener('click', function (e) {
-				game.moveItem.play('a1');
+			// 攻擊
+			document.getElementById('attack').addEventListener('click', function (e) {
+				game.vikings.play('attack');
+				document.getElementById('walk').textContent = 'Walk';
+				document.getElementById('run').textContent = 'Run';
 			});
 
-			document.getElementById('play2').addEventListener('click', function (e) {
-				game.moveItem.play('a2');
+			// 走路切換
+			document.getElementById('walk').addEventListener('click', function (e) {
+				if (game.vikings.currentAnimation === 'walk') {
+					game.vikings.play('standby');
+					document.getElementById('walk').textContent = 'Walk';
+				} else {
+					game.vikings.play('walk');
+					document.getElementById('walk').textContent = 'Stop';
+				}
 			});
 
-			document.getElementById('play3').addEventListener('click', function (e) {
-				game.moveItem.play('a3');
+			document.getElementById('run').addEventListener('click', function (e) {
+				if (game.vikings.currentAnimation === 'run') {
+					game.vikings.play('standby');
+					document.getElementById('run').textContent = 'Run';
+				} else {
+					game.vikings.play('run');
+					document.getElementById('run').textContent = 'Stop';
+				}
 			});
 		})
 		

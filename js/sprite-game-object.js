@@ -140,6 +140,10 @@ var SpriteGameObject = (function() {
 		this.alive = false;
 	};
 	
+	Constructor.prototype.recover = function () {
+		this.alive = true;
+	};
+	
 	Constructor.prototype._createAnimations = function () {
 		var animationName;
 		var currentAnimationFramesData;

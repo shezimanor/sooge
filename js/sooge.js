@@ -45,39 +45,105 @@ var SOOGE = (function () {
 
   Constructor.prototype.init = function (callback) {
     var _self = this;
-    console.log(this.source);
+    // console.log(this.source);
+    var fbData = {
+      x: 120,
+      y: 140
+    }
     // 建立遊戲物件
-    _self.moveItem = new SpriteGameObject(_self.ctx, 180, 220, _self.source['waterBottle'], {
-      fps: 16,
+    _self.fireball = new SpriteGameObject(_self.ctx, fbData.x, fbData.y, _self.source['fireball'], {
+      fps: 18,
       repeat: -1,
-      stopAndDie: false,
+      stopAndDie: false
+    });
+    _self.fireball.kill();
+    _self.vikings = new SpriteGameObject(_self.ctx, 80, 120, _self.source['vikings'], {
+      fps: 18,
+      repeat: -1,
+      stopAndDie: false, 
       animations: {
-        a1: {
-          frames: [7,8,9,10,11,12,13,14],
+        standby: {
+          frames: '0..5',
+          fps: 5,
+          repeat: -1,
+          stopAndDie: false
+        },
+        run: {
+          frames: '6..11',
+          fps: 30,
+          repeat: -1,
+          stopAndDie: false
+        },
+        attack: {
+          frames: '12..20',
+          fps: 24,
+          repeat: 0,
+          stopAndDie: false
+        },
+        walk: {
+          frames: '21..34',
           fps: 12,
           repeat: -1,
           stopAndDie: false
         },
-        a2: {
-          frames: '0..6',
-          fps: 18,
-          repeat: -1,
-          stopAndDie: false
-        },
-        a3: {
-          frames: '18..0',
-          fps: 30,
-          repeat: 2,
-          stopAndDie: false
-        }
       }
     });
-    // 註冊動畫結束事件
-    _self.moveItem.on('SGObj:animation:stop', function(stoppedAnimation) {
-      // 指定的動畫結束後，回去播預設的循環動畫
-      if (stoppedAnimation === 'a3') _self.moveItem.play();
+    // // 註冊動畫結束事件
+    _self.fireball.on('SGObj:animation:play', function (playingAnimation) {
+      if (playingAnimation === 'default') {
+        _self.fireball.x = fbData.x;
+        _self.fireball.y = fbData.y;
+        _self.fireball.vx = 1;
+      }
     });
-    _self.moveItem.play();
+    _self.vikings.on('SGObj:animation:play', function (playingAnimation) {
+      if (playingAnimation === 'attack') setTimeout(function() {
+        _self.fireball.recover();
+        _self.fireball.play();
+      }, 292); // 1000/24 * (18-12+1) = 291.67
+    });
+    _self.vikings.on('SGObj:animation:stop', function (playingAnimation) {
+      if (playingAnimation === 'attack') _self.vikings.play('standby');
+    });
+    _self.vikings.play('standby');
+    // _self.fireball.play();
+    // _self.pikachu = new SpriteGameObject(_self.ctx, 180, 220, _self.source['pikachu'], {
+    //   fps: 9,
+    //   repeat: -1,
+    //   stopAndDie: false
+    // });
+    // _self.pikachu.play();
+    // _self.moveItem = new SpriteGameObject(_self.ctx, 180, 220, _self.source['waterBottle'], {
+    //   fps: 16,
+    //   repeat: -1,
+    //   stopAndDie: false,
+    //   animations: {
+    //     a1: {
+    //       frames: [7,8,9,10,11,12,13,14],
+    //       fps: 12,
+    //       repeat: -1,
+    //       stopAndDie: false
+    //     },
+    //     a2: {
+    //       frames: '0..6',
+    //       fps: 18,
+    //       repeat: -1,
+    //       stopAndDie: false
+    //     },
+    //     a3: {
+    //       frames: '18..0',
+    //       fps: 30,
+    //       repeat: 2,
+    //       stopAndDie: false
+    //     }
+    //   }
+    // });
+    // // 註冊動畫結束事件
+    // _self.moveItem.on('SGObj:animation:stop', function(stoppedAnimation) {
+    //   // 指定的動畫結束後，回去播預設的循環動畫
+    //   if (stoppedAnimation === 'a3') _self.moveItem.play();
+    // });
+    // _self.moveItem.play();
     // _self.moveItem1 = new SpriteGameObject(_self.ctx, 400, 220, _self.source['ADA'], { fps: 24 });
     // _self.moveItem1.play();
     // 遊戲開始
@@ -131,12 +197,19 @@ var SOOGE = (function () {
   };
 
   Constructor.prototype._update = function () {
-
+    if (this.fireball.vx > 0) this.fireball.vx += 0.5;
+    if (this.fireball.x >= 1000-70.5) {
+      this.fireball.vx = 0;
+      this.fireball.kill();
+    }
+    this.fireball.update();
   };
 
   Constructor.prototype._draw = function () {
     this.ctx.clearRect(0, 0, this.width, this.height);
-    this.moveItem.draw();
+    this.fireball.draw();
+    this.vikings.draw();
+    // this.moveItem.draw();
     // this.moveItem1.draw();
   };
 
